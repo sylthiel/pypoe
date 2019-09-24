@@ -13,10 +13,15 @@ for rank, acct_chr in enumerate(list_of_acctchr):
 	acct, chr = acct.strip(), chr.strip()
 	#print (acct.strip(), chr.strip())
 	print (f"https://www.pathofexile.com/character-window/get-items?accountName={chr}&character={acct}")
-	response = requests.get(f"https://www.pathofexile.com/character-window/get-items?accountName={chr}&character={acct}")
-	print(response.status_code)
+	attempts=0
+	while(True):
+		if(attempts >= 10): 
+			break
+		response = requests.get(f"https://www.pathofexile.com/character-window/get-items?accountName={chr}&character={acct}")
+		print(response.status_code)
+		if(response.status_code!=429):
+			break
+		time.sleep(2)
+		attempts+=1
 	request+=1
 	dbg.write(f"[{datetime.datetime.now()}] Request iteration {request} for https://www.pathofexile.com/character-window/get-items?accountName={chr}&character={acct} with response code {response.status_code}\n")
-	if(request>=5):
-		time.sleep(2)
-		request=0
