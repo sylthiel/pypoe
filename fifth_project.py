@@ -19,6 +19,7 @@ def allocate_gems(groups, gems):
 
 
 items = open("C:\\items\\items.json", "r", encoding="utf-8")
+linkdata=open("C:\\items\\linkdata.txt", "w+", encoding="utf-8")
 socketgroups=['','','','','','']
 items_json=json.load(items)
 socketgroups_data=[]
@@ -52,7 +53,9 @@ for rank, character in enumerate(items_json):
 		socketgroups=['','','','','','']
 #socketgroups_data=sorted(socketgroups_data)
 
-print(actual_sorted_link_groups)
+for datapoint in actual_sorted_link_groups:
+	linkdata.write(datapoint)
+	linkdata.write("\n")
 
 
 
