@@ -12,7 +12,7 @@ translation={"S" : "R", "D" : "G", "I" : "B", "W" : "W", "A": "A"}
 
 class poe_gem:
 	def __repr__(self):
-		return f"{self.name} {self.colour} \n"
+		return f"{self.name} ({self.colour})"
 	def __init__(self):
 		self.colour=''
 		self.name=''
@@ -36,6 +36,7 @@ class poe_item:
 		self.socketgroups=socketgroups
 		self.gems=gems
 		self.links=''
+		self.sortedlinks=''
 	def create_links(self):
 		linkage=''
 		for x in self.socketgroups:
@@ -44,8 +45,9 @@ class poe_item:
 			else:
 				linkage=linkage + '.'
 		self.links=linkage.rstrip('.')
+		self.sortedlinks=''.join(sorted(self.links))
 	def __repr__(self):
-		s = f"inventoryId = {self.inventoryId}\n links are {self.links}\n gems are {self.gems}"
+		s = f"{self.inventoryId}\n links are {self.links}\n {(self.gems)}"
 		return s
 
 class poe_character:
@@ -131,6 +133,8 @@ for rank, character in enumerate(items_json):
 		characters.append(tmp_character)
 
 for char in characters:
-	print (f"Character {char.character_name}")
 	for item in char.items:
-		print (item)
+		#print(item.sortedlinks)
+		if(item.sortedlinks=='BGGRRR'):
+			print (f"{char.character_name}")
+			print (item)
