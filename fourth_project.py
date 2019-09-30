@@ -26,7 +26,8 @@ items = open("items.json", "w+", encoding="utf-8")
 list_items=[]
 request=0
 for acct_chr in enumerate(list_of_acctchr):
-	acct, chr = acct_chr
+	acct=acct_chr[1][0]
+	chr=acct_chr[1][1]
 	#print (acct.strip(), chr.strip())
 	print (f"https://www.pathofexile.com/character-window/get-items?accountName={chr}&character={acct}")
 	attempts=0
@@ -41,7 +42,7 @@ for acct_chr in enumerate(list_of_acctchr):
 			#json.dump(response.json(), items, indent=4)
 			#items.write(",\n")
 			break
-		if(response.status_code==403):
+		elif(response.status_code!=429):
 			break
 		time.sleep(30)
 		attempts+=1
