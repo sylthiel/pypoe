@@ -148,15 +148,16 @@ print(f"AN {characters[0].account_name} CN {characters[0].character_name}")
 INSERT_CHAR_QUERY = "INSERT INTO characters (char_id, account_name, character_name) VALUES (%s, %s, %s);"
 INSERT_ITEM_QUERY = "INSERT INTO items (item_id, inventory_id, sorted_links, char_id) VALUES (%s, %s, %s, %s);"
 INSERT_GEM_QUERY = "INSERT INTO gems (colour, name, support, tags, item_id, char_id) VALUES (%s, %s, %s, %s, %s, %s);"
-
+item_id=0
 for char_id, char in enumerate(characters):
 	print ("running the following query:")
 	print (INSERT_CHAR_QUERY)
 	print (f"{char_id} --  {char.account_name} -- {char.account_name}")
 	cursor.execute(INSERT_CHAR_QUERY, (char_id, char.account_name, char.character_name))
-	for item_id, item in enumerate(char.items):
+	for item in char.items:
 		cursor.execute(INSERT_ITEM_QUERY, (item_id, item.inventoryId, item.sortedlinks, char_id))
 		for gem in item.gems:
 			cursor.execute(INSERT_GEM_QUERY, (gem.colour, gem.name, gem.support, gem.tags, item_id, char_id))
+		item_id+=1
 
 con.commit()
