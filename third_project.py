@@ -21,7 +21,7 @@ for i in range(len(character_list)):
 		acct_chr=("", "")
 		acct_chr=(str(character_list[i]["entries"][j]["account"]["name"]), str(character_list[i]["entries"][j]["character"]["name"]))
 		
-		con.execute(insert_query, acct_chr)
+		cursor.execute(insert_query, acct_chr)
 		char_count += 1
 
 con.commit()

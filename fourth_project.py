@@ -29,12 +29,12 @@ for acct_chr in enumerate(list_of_acctchr):
 	acct=acct_chr[1][0]
 	chr=acct_chr[1][1]
 	#print (acct.strip(), chr.strip())
-	print (f"https://www.pathofexile.com/character-window/get-items?accountName={chr}&character={acct}")
+	print (f"https://www.pathofexile.com/character-window/get-items?accountName={acct}&character={chr}")
 	attempts=0
 	while(True):
 		if(attempts >= 3): 
 			break
-		response = requests.get(f"https://www.pathofexile.com/character-window/get-items?accountName={chr}&character={acct}")
+		response = requests.get(f"https://www.pathofexile.com/character-window/get-items?accountName={acct}&character={chr}")
 
 		print(response.status_code)
 		if(response.status_code==200):
@@ -47,7 +47,7 @@ for acct_chr in enumerate(list_of_acctchr):
 		time.sleep(30)
 		attempts+=1
 	request+=1
-	dbg.write(f"[{datetime.datetime.now()}] Request iteration {request} for https://www.pathofexile.com/character-window/get-items?accountName={chr}&character={acct} with response code {response.status_code}\n")
+	dbg.write(f"[{datetime.datetime.now()}] Request iteration {request} for https://www.pathofexile.com/character-window/get-items?accountName={acct}&character={chr} with response code {response.status_code}\n")
 	if (request >= 50):
 		break
 json.dump(list_items, items, indent=4)
