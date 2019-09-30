@@ -145,12 +145,14 @@ for rank, character in enumerate(items_json):
 		characters.append(tmp_character)
 print(f"AN {characters[0].account_name} CN {characters[0].character_name}")
 
-INSERT_CHAR_QUERY = "INSERT INTO characters (char_id, account_name, character_name) VALUES (%s %s %s)"
-INSERT_ITEM_QUERY = "INSERT INTO items (item_id, inventory_id, sorted_links, char_id) VALUES (%s %s %s %s)"
-INSERT_GEM_QUERY = "INSERT INTO gems (colour, name, support, tags, item_id, char_id) VALUES (%s %s %s %s %s %s)"
+INSERT_CHAR_QUERY = "INSERT INTO characters (char_id, account_name, character_name) VALUES (%s %s %s);"
+INSERT_ITEM_QUERY = "INSERT INTO items (item_id, inventory_id, sorted_links, char_id) VALUES (%s %s %s %s);"
+INSERT_GEM_QUERY = "INSERT INTO gems (colour, name, support, tags, item_id, char_id) VALUES (%s %s %s %s %s %s);"
 
 for char_id, char in enumerate(characters):
-
+	print ("running the following query:")
+	print (INSERT_CHAR_QUERY)
+	print (f"{char_id} --  {char.account_name} -- {char.account_name}")
 	cursor.execute(INSERT_CHAR_QUERY, (char_id, char.account_name, char.character_name))
 	for item_id, item in enumerate(char.items):
 		cursor.execute(INSERT_ITEM_QUERY, (item_id, item.inventoryId, item.sortedlinks, char_id))
