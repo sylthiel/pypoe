@@ -15,7 +15,10 @@ con=sql.connect(host=rds_host, user='admin', password=pwd, database='pytest')
 cursor=con.cursor(buffered=True)
 
 #list_of_acctchr=open("C:\\list_of_acctchr.txt", "r", encoding="utf-8")
-list_of_acctchr=
+
+cursor.execute("SELECT * FROM Acc_Chr")
+list_of_acctchr=cursor.fetchall()
+
 dbg=open("dbg.log", "w+", encoding="utf-8")
 dbg.write("----------------------------------------------------------")
 dbg.write(f"[{datetime.datetime.now()}] script start\n")
