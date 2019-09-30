@@ -2,9 +2,21 @@
 import json
 import requests
 import time
+import datetime
+import mysql.connector as sql
+
+current_league_url = "https://www.pathofexile.com/api/ladders/Blight"
+
+
+rds_host='pypoe.cgqezikpygym.eu-west-2.rds.amazonaws.com'
+creds=open('creds.txt', 'r')
+pwd=(creds.read()).strip()
+
+con=sql.connect(host=rds_host, user='admin', password=pwd, database='pytest')
+cursor=con.cursor(buffered=True)
 
 #list of grabbed characters with their items
-items = open("C:\\items\\items.json", "r", encoding="utf-8")
+items = open("items.json", "r", encoding="utf-8")
 items_json=json.load(items)
 
 # GEM COLOR TRANLSATION -- GGG CODES SOCKETS AS RGB BUT GEMS AS SDI ¯\_(ツ)_/¯¯
@@ -131,10 +143,15 @@ for rank, character in enumerate(items_json):
 		gems=[]
 	if(real_items):
 		characters.append(tmp_character)
+INSERT_CHAR_QUERY = "INSERT INTO characters (char_id, account_name, character_name) VALUES (%s %s %s)"
+INSERT_ITEM_QUERY = "INSERT INTO items (item_id, inventory_id, sorted_links, char_id) VALUES (%s %s %s %s)"
+INSERT_GEM_QUERY = "INSERT INTO gems (colour, name, support, tags, item_id, char_id) VALUES (%s %s %s %s %s %s)"
 
-for char in characters:
-	for item in char.items:
-		#print(item.sortedlinks)
-		if(item.sortedlinks=='BGGRRR'):
-			print (f"{char.character_name}")
-			print (item)
+for char_id, char in enumerate(characters):
+	cursor.execute(INSERT_CHAR_QUERY, (char_id, char.account_name, char.character_name))
+	for item_id, item in enumerate(char.items):
+		cursor.execute(INSERT_ITEM_QUERY, (item_id, item.inventoryId, item.sortedlinks, char_id))
+		for gem in item.gems:
+			cursor.execute(INSERT_GEM_QUERY, (gem.colour, gem.name, gem.support, gem.tags, item_id, char_id))
+
+con.commit()
