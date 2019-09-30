@@ -3,7 +3,7 @@
 import json
 import requests
 
-with open("C:\\grabbed.json", "r") as data_file:
+with open("grabbed.json", "r") as data_file:
 	character_list = json.load(data_file)
 list_of_acctchr=open("C:\\list_of_acctchr.txt", "w+", encoding="utf-8")
 char_count=0
