@@ -12,7 +12,7 @@ rds_host='pypoe.cgqezikpygym.eu-west-2.rds.amazonaws.com'
 creds=open('creds.txt', 'r')
 pwd=(creds.read()).strip()
 
-con=sql.connect(host=rds_host, user='admin', password=pwd, database='pytest')
+con=sql.connect(host=rds_host, user='admin', password=pwd, database='pytest', use_unicode=True)
 cursor=con.cursor(buffered=True)
 cursor.execute("SET NAMES 'utf8mb4';")
 #list of grabbed characters with their items
