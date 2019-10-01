@@ -9,8 +9,10 @@ pwd=(creds.read()).strip()
 
 con=sql.connect(host=rds_host, user='admin', password=pwd, database='pytest')
 cursor=con.cursor(buffered=True)
+con.execute("SET NAMES 'utf8mb4';")
+con.fetchall()
 
-insert_query="INSERT INTO Acc_Chr VALUES (%s, %s, %s);"
+insert_query="INSERT INTO account_character_pairs VALUES (%s, %s, %s);"
 
 
 with open("grabbed.json", "r") as data_file:
