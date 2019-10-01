@@ -35,6 +35,7 @@ for acct_chr in enumerate(list_of_acctchr):
 	if(computerid * 5000 <= acct_chr[0] <= computerid*5000 + 5000):
 		acct=acct_chr[1][0]
 		chr=acct_chr[1][1]
+		print (f"Reqest number {acct_chr[0]}")
 		print (f"https://www.pathofexile.com/character-window/get-items?accountName={acct}&character={chr}")
 		attempts=0
 		while(True):
