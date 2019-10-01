@@ -18,7 +18,6 @@ cursor=con.cursor(buffered=True)
 
 cursor.execute("SELECT * FROM Acc_Chr")
 list_of_acctchr=cursor.fetchall()
-print(list_of_acctchr[0])
 dbg=open("dbg.log", "w+", encoding="utf-8")
 dbg.write("----------------------------------------------------------")
 dbg.write(f"[{datetime.datetime.now()}] script start\n")
