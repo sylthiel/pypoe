@@ -54,6 +54,6 @@ for acct_chr in enumerate(list_of_acctchr):
 		request+=1
 		dbg.write(f"[{datetime.datetime.now()}] Request iteration {request} for https://www.pathofexile.com/character-window/get-items?accountName={acct}&character={chr} with response code {response.status_code}\n")
 		if (request >= requestlimit):
-			sleep(180)
+			time.sleep(180)
 			request=0
 json.dump(list_items, items, indent=4, ensure_ascii=False)
