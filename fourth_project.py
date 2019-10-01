@@ -24,11 +24,14 @@ dbg.write("----------------------------------------------------------")
 dbg.write(f"[{datetime.datetime.now()}] script start\n")
 
 idfile=open('computerid', 'r')
+paramfile=open('params_fourth', 'r')
+requestlimit=int(paramfile.read())
 computerid=int(idfile.read())
 
 items = open("items.json", "w+", encoding="utf-8")
 list_items=[]
 request=0
+
 for acct_chr in enumerate(list_of_acctchr):
 	if(computerid * 5000 <= acct_chr[0] <= computerid*5000 + 5000):
 		acct=acct_chr[1][0]
@@ -50,6 +53,6 @@ for acct_chr in enumerate(list_of_acctchr):
 			attempts+=1
 		request+=1
 		dbg.write(f"[{datetime.datetime.now()}] Request iteration {request} for https://www.pathofexile.com/character-window/get-items?accountName={acct}&character={chr} with response code {response.status_code}\n")
-		if (request >= 5000):
+		if (request >= requestlimit):
 			break
 json.dump(list_items, items, indent=4, ensure_ascii=False)
