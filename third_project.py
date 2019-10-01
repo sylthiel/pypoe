@@ -12,7 +12,7 @@ cursor=con.cursor(buffered=True)
 cursor.execute("SET NAMES 'utf8mb4';")
 #cursor.fetchall()
 
-insert_query="INSERT INTO account_character_pairs VALUES (%s, %s, %s);"
+insert_query="INSERT INTO Acc_Chr VALUES (%s, %s, %s);"
 
 
 with open("grabbed.json", "r", encoding='utf-8') as data_file:
