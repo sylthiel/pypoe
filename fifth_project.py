@@ -14,7 +14,7 @@ pwd=(creds.read()).strip()
 
 con=sql.connect(host=rds_host, user='admin', password=pwd, database='pytest')
 cursor=con.cursor(buffered=True)
-
+cursor.execute("SET NAMES 'utf8mb4';")
 #list of grabbed characters with their items
 items = open("items.json", "r", encoding="utf-8")
 items_json=json.load(items)

@@ -5,7 +5,7 @@ import json
 list_grabbed = []
 current_league_url = "https://www.pathofexile.com/api/ladders/Blight"
 offset=0
-db = open("grabbed.json", "w+")
+db = open("grabbed.json", "w+", encoding='utf-8')
 while (offset <= 14800):
 	response = requests.get(current_league_url+"?limit=200&offset="+str((offset)))
 	offset+=200
@@ -13,4 +13,4 @@ while (offset <= 14800):
 	db.write("\n")
 	#print(response.json)
 	print (response.status_code)
-json.dump(list_grabbed, db, indent=4)
+json.dump(list_grabbed, db, indent=4, ensure_ascii=False)
