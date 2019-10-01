@@ -1,0 +1,8 @@
+#database_table_creation_script
+ALTER DATABASE dbname DEFAULT COLLATE utf8mb4_unicode_ci;
+ALTER TABLE dbname.tablename COLLATE utf8mb4_unicode_ci;
+ALTER TABLE tbl_name CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+
+
+https://www.somacon.com/p580.php

@@ -9,13 +9,13 @@ pwd=(creds.read()).strip()
 
 con=sql.connect(host=rds_host, user='admin', password=pwd, database='pytest')
 cursor=con.cursor(buffered=True)
-con.execute("SET NAMES 'utf8mb4';")
-con.fetchall()
+cursor.execute("SET NAMES 'utf8mb4';")
+#cursor.fetchall()
 
 insert_query="INSERT INTO account_character_pairs VALUES (%s, %s, %s);"
 
 
-with open("grabbed.json", "r") as data_file:
+with open("grabbed.json", "r", encoding='utf-8') as data_file:
 	character_list = json.load(data_file)
 
 char_count = 0
