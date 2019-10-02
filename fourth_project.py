@@ -41,15 +41,18 @@ for acct_chr in enumerate(list_of_acctchr):
 		while(True):
 			if(attempts >= 4): 
 				break
-			response = requests.get(f"https://www.pathofexile.com/character-window/get-items?accountName={acct}&character={chr}")
-
+			try:
+				response = requests.get(f"https://www.pathofexile.com/character-window/get-items?accountName={acct}&character={chr}")
+			except ConnectionError:
+				time.sleep(180)
+				continue
 			print(response.status_code)
 			if(response.status_code==200):
 				list_items.append(response.json())
 				break
 			elif(response.status_code!=429):
 				break
-			time.sleep(30)
+			#time.sleep(30)
 			attempts+=1
 		request+=1
 		dbg.write(f"[{datetime.datetime.now()}] Request iteration {request} for https://www.pathofexile.com/character-window/get-items?accountName={acct}&character={chr} with response code {response.status_code}\n")
