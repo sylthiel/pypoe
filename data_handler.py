@@ -85,7 +85,7 @@ item_id=0
 ##
 
 def yeet_character_items_to_sql(char):
-	print (f"{char_id} --  {char.account_name} -- {char.account_name}")
+	print (f"Yeeting {char_id} --  {char.account_name} -- {char.account_name}")
 	for item in char.items:
 		cursor.execute(INSERT_ITEM_QUERY, (item_id, item.inventoryId, item.sortedlinks, char_id))
 		for gem in item.gems:
@@ -93,7 +93,6 @@ def yeet_character_items_to_sql(char):
 		item_id+=1
 	sql_connection.commit()
 def parse_api_character_items(api_character_items, rank, account, character):
-	print(api_character_items)
 	socketgroups=[]
 	gems=[]
 	tmp_character=poe_character(rank, account, character, api_character_items["character"]["class"])
