@@ -54,7 +54,6 @@ def obtain_ladder(current_league_url):
 		if(chunk):
 			list_grabbed.append(chunk)
 		offset+=200
-		db.write("\n")
 	return json.dumps(list_grabbed, indent=4, ensure_ascii=False)
 
 def ladder_to_sql():
