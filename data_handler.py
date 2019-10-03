@@ -164,7 +164,7 @@ def grab_items(request_limit=9001):
 	dbg.write("----------------------------------------------------------")
 	dbg.write(f"[{datetime.datetime.now()}] started working item data")
 	list_items=[]
-	cursor.execute(GET_CHARACTERS_QUERY, (int(computerid), int(computerid*5000 + 5000),))
+	cursor.execute(GET_CHARACTERS_QUERY, (int(computerid)*5000, int(computerid*5000 + 5000),))
 	list_of_acctchr=cursor.fetchall()
 	#print (list_of_acctchr[0][2])
 	#print (list_of_acctchr[1])
