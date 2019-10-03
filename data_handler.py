@@ -103,8 +103,8 @@ def grab_items():
         dbg.write(f"[{datetime.datetime.now()}] Request iteration {request} for https://www.pathofexile.com/character-window/get-items?accountName={acct}&character={chr} with response code {response.status_code}\n")
         time.sleep(2)
         
-        if(request >= 500):
-            break;
+        #if(request >= 500):
+        #    break;
     
     
 print(datetime.datetime.now())
