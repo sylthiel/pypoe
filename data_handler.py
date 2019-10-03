@@ -61,6 +61,8 @@ INSERT_GEM_QUERY = "INSERT INTO gems (colour, name, support, tags, item_id, char
 # CURRENT CONSTANTS: 3.8
 current_league_url = "https://www.pathofexile.com/api/ladders/Blight"
 MAX_LADDER=15000
+# GEM COLOR TRANLSATION -- GGG CODES SOCKETS AS RGB BUT GEMS AS SDI ¯\_(ツ)_/¯¯
+translation={"S" : "R", "D" : "G", "I" : "B", "W" : "W", "A": "A"}
 #
 
 # SQL connection 
@@ -69,6 +71,7 @@ with open('creds.txt', 'r') as creds:
 	pwd=(creds.read()).strip()
 sql_connection=sql.connect(host=rds_host, user='admin', password=pwd, database='pytest')
 cursor=sql_connection.cursor(buffered=True)
+cursor.execute("SET NAMES 'utf8mb4';")
 #very_nice_credntial_handling.jpeg
 
 # File opening
