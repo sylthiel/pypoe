@@ -84,17 +84,20 @@ with open('computerid', 'r') as id:
 item_id=0
 ##
 
+
 def yeet_character_items_to_sql(char):
-	print (f"Yeeting {char.rank} --  {char.account_name} -- {char.account_name}")
+	print (f"Yeeting {char.rank} --	 {char.account_name} -- {char.account_name}")
+	global item_id
 	for item in char.items:
-		cursor.execute(INSERT_ITEM_QUERY, (item_id, item.inventoryId, item.sortedlinks, char_id))
+		cursor.execute(INSERT_ITEM_QUERY, (item_id, item.inventoryId, item.sortedlinks, char.rank))
 		for gem in item.gems:
-			cursor.execute(INSERT_GEM_QUERY, (gem.colour, gem.name, gem.support, gem.tags, item_id, char_id))
+			cursor.execute(INSERT_GEM_QUERY, (gem.colour, gem.name, gem.support, gem.tags, item_id, char.rank))
 		item_id+=1
 	sql_connection.commit()
 def parse_api_character_items(api_character_items, rank, account, character):
 	socketgroups=[]
 	gems=[]
+	items=[]
 	tmp_character=poe_character(rank, account, character, api_character_items["character"]["class"])
 	has_items=0
 	for item in api_character_items['items']:
