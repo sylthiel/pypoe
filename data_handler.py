@@ -56,7 +56,7 @@ def obtain_ladder(current_league_url):
 	return json.dumps(list_grabbed, indent=4, ensure_ascii=False)
 
 def ladder_to_sql():
-    insert_query="INSERT INTO Characters (account_name, character_name, char_id) VALUES (%s, %s, %s);"
+    insert_query="INSERT INTO characters (account_name, character_name, char_id) VALUES (%s, %s, %s);"
     character_list=json.loads(obtain_ladder(current_league_url))
     
     for i in range(len(character_list)):
