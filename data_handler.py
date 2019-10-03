@@ -78,6 +78,7 @@ def grab_items():
         print (f"Reqest number {acct_chr[0]}")
         print (f"https://www.pathofexile.com/character-window/get-items?accountName={acct}&character={chr}")
         attempts=0
+        request=0
         while(True):
             if(attempts > 3): 
                 break
