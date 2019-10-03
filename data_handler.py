@@ -102,7 +102,6 @@ def parse_api_character_items(api_character_items, rank, account, character):
 	has_items=0
 	for item in api_character_items['items']:
 		tmp_item=poe_item()
-		has_items=0
 		if ('sockets' in item):
 			has_items=1
 			tmp_socketgroup=['','','','','','']
