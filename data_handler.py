@@ -93,7 +93,7 @@ def parse_api_character_items(api_character_items, rank, account, character):
 	print(api_character_items)
 	socketgroups=[]
 	gems=[]
-	tmp_character=poe_character(rank, account, character, api_character_items["character"]["subclass"])
+	tmp_character=poe_character(rank, account, character, api_character_items["character"]["class"])
 	for item in api_character_items['items']:
 		tmp_item=poe_item()
 		has_items=0
