@@ -75,9 +75,9 @@ def grab_items():
     list_of_acctchr=cursor.fetchall()
     #print (list_of_acctchr[0][2])
     #print (list_of_acctchr[1])
-    for acct_chr in enumerate(list_of_acctchr):
+    for acct_chr in list_of_acctchr):
         print (acct_chr)
-        acct, chr=acct_chr[0][1], acct_chr[0][2]
+        acct, chr=acct_chr[1], acct_chr[2]
         print (f"Reqest number {acct_chr[0]}")
         print (f"https://www.pathofexile.com/character-window/get-items?accountName={acct}&character={chr}")
         attempts=0
