@@ -71,8 +71,33 @@ def grab_items():
 
     cursor.execute("SELECT * FROM characters WHERE rank <= %s;", computerid*5000 + 5000)
     list_of_acctchr=cursor.fetchall()
+    acct, chr=acct_chr[1][0], acct_chr[1][1]
+    print (f"Reqest number {acct_chr[0]}")
+    print (f"https://www.pathofexile.com/character-window/get-items?accountName={acct}&character={chr}")
+    attempts=0
+    while(True):
+        if(attempts > 3): 
+            break
+        try:
+            response = requests.get(f"https://www.pathofexile.com/character-window/get-items?accountName={acct}&character={chr}")
+        except ConnectionError, err:
+            dbg.write(f"FATALLY FAILING ON {request} with {str(err)}. Sleeping for 180")
+            time.sleep(180)
+            continue
+        print(response.status_code)
+        if(response.status_code==200):
+            list_items.append(response.json())
+            break
+        elif(response.status_code!=429):
+            break
+        attempts+=1
+    request+=1
+    dbg.write(f"[{datetime.datetime.now()}] Request iteration {request} for https://www.pathofexile.com/character-window/get-items?accountName={acct}&character={chr} with response code {response.status_code}\n")
+    time.sleep(2)
+    
 print(datetime.datetime.now())
-ladder_to_sql()
+#ladder_to_sql()
+grab_items()
 print(datetime.datetime.now())
 #json.dump(obtain_ladder(current_league_url), db, indent=4, ensure_ascii=False)
 
