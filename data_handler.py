@@ -119,9 +119,6 @@ def parse_api_character_items(api_character_items, rank, account, character):
 		gems=[]
 	if(has_items):
 		yeet_character_items_to_sql(tmp_character)
-
-
-
 def handle_ladder_request_response(offset):
 	response = requests.get(f"{current_league_url}?limit=200&offset={str(offset)}")
 	if(response.status_code == 200):
@@ -191,15 +188,9 @@ def grab_items(request_limit=9001):
 		time.sleep(2)
 		if(request >= request_limit):
 			break;
-
-	
 print(datetime.datetime.now())
 ladder_to_sql()
 print(datetime.datetime.now())
 grab_items(45)
 print(datetime.datetime.now())
 #json.dump(obtain_ladder(current_league_url), db, indent=4, ensure_ascii=False)
-
-
-
-
