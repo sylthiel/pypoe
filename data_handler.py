@@ -177,7 +177,7 @@ def grab_items(request_limit=9001):
 				continue
 			print(response.status_code)
 			if(response.status_code==200):
-				current_character_items=json.loads(response.json())
+				current_character_items=response.json()
 				break
 			elif(response.status_code!=429):
 				break
@@ -189,8 +189,8 @@ def grab_items(request_limit=9001):
 		if(request >= request_limit):
 			break;
 print(datetime.datetime.now())
-ladder_to_sql()
-print(datetime.datetime.now())
+#ladder_to_sql()
+#print(datetime.datetime.now())
 grab_items(45)
 print(datetime.datetime.now())
 #json.dump(obtain_ladder(current_league_url), db, indent=4, ensure_ascii=False)
