@@ -52,19 +52,21 @@ def obtain_ladder(current_league_url):
 			list_grabbed.append(chunk)
 		offset+=200
 		db.write("\n")
-	return json.dump(list_grabbed, indent=4, ensure_ascii=False)
+	return json.dumps(list_grabbed, indent=4, ensure_ascii=False)
 
 def ladder_to_sql():
     insert_query="INSERT INTO Characters (account_name, character_name, char_id) VALUES (%s, %s, %s);"
-    character_list=obtain_ladder(current_league_url)
+    character_list=json.loads(obtain_ladder(current_league_url))
     
     for i in range(len(character_list)):
         for j in range (len(character_list[i]["entries"])):
             acct_chr=(str(character_list[i]["entries"][j]["account"]["name"]), str(character_list[i]["entries"][j]["character"]["name"]), str(character_list[i]["entries"][j]["rank"]))
             cursor.execute(insert_query, acct_chr)
     sql_connection.commit()
-
+    
+print(datetime.datetime.now()
 ladder_to_sql()
+print(datetime.datetime.now()
 #json.dump(obtain_ladder(current_league_url), db, indent=4, ensure_ascii=False)
 
 
