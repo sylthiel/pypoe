@@ -69,7 +69,7 @@ def grab_items():
     dbg.write("----------------------------------------------------------")
     dbg.write(f"[{datetime.datetime.now()}] started working item data")
 
-    cursor.execute("SELECT * FROM characters WHERE rank <= %s;", computerid*5000 + 5000)
+    cursor.execute("SELECT * FROM characters WHERE rank <= %s;", int(computerid*5000 + 5000))
     list_of_acctchr=cursor.fetchall()
     acct, chr=acct_chr[1][0], acct_chr[1][1]
     print (f"Reqest number {acct_chr[0]}")
