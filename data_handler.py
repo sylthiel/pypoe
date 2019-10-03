@@ -80,7 +80,7 @@ def grab_items():
             break
         try:
             response = requests.get(f"https://www.pathofexile.com/character-window/get-items?accountName={acct}&character={chr}")
-        except ConnectionError, err:
+        except ConnectionError as err:
             dbg.write(f"FATALLY FAILING ON {request} with {str(err)}. Sleeping for 180")
             time.sleep(180)
             continue
