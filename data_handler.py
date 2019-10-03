@@ -53,7 +53,7 @@ class poe_character:
 
 
 ## QUERY DEFINITIONS
-GET_CHARACTERS_QUERY = """SELECT * FROM characters WHERE char_id <= %s;"""
+GET_CHARACTERS_QUERY = """SELECT * FROM characters WHERE (%s <= char_id) AND (char_id <= %s);"""
 INSERT_ITEM_QUERY = "INSERT INTO items (item_id, inventory_id, sorted_links, char_id) VALUES (%s, %s, %s, %s);"
 INSERT_GEM_QUERY = "INSERT INTO gems (colour, name, support, tags, item_id, char_id) VALUES (%s, %s, %s, %s, %s, %s);"
 ##
@@ -164,16 +164,17 @@ def grab_items(request_limit=9001):
 	dbg.write("----------------------------------------------------------")
 	dbg.write(f"[{datetime.datetime.now()}] started working item data")
 	list_items=[]
-	cursor.execute(GET_CHARACTERS_QUERY, (int(computerid*5000 + 5000),))
+	cursor.execute(GET_CHARACTERS_QUERY, (int(computerid), int(computerid*5000 + 5000),))
 	list_of_acctchr=cursor.fetchall()
 	#print (list_of_acctchr[0][2])
 	#print (list_of_acctchr[1])
+	request=0
 	for acct_chr in (list_of_acctchr):
 		rank, acct, chr = acct_chr[0], acct_chr[1], acct_chr[2]
 		print (f"Reqest number {acct_chr[0]}")
 		print (f"https://www.pathofexile.com/character-window/get-items?accountName={acct}&character={chr}")
 		attempts=0
-		request=0
+		
 		while(True):
 			if(attempts > 3): 
 				break
@@ -199,6 +200,6 @@ def grab_items(request_limit=9001):
 print(datetime.datetime.now())
 #ladder_to_sql()
 #print(datetime.datetime.now())
-grab_items(45)
+grab_items()
 print(datetime.datetime.now())
 #json.dump(obtain_ladder(current_league_url), db, indent=4, ensure_ascii=False)
