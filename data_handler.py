@@ -9,7 +9,9 @@ import time
 import datetime
 
 
-
+## QUERY DEFINITIONS
+GET_CHARACTERS_QUERY = """SELECT * FROM characters WHERE char_id <= %s;"""
+##
 
 # CURRENT CONSTANTS: 3.8
 current_league_url = "https://www.pathofexile.com/api/ladders/Blight"
@@ -68,8 +70,8 @@ def ladder_to_sql():
 def grab_items():
     dbg.write("----------------------------------------------------------")
     dbg.write(f"[{datetime.datetime.now()}] started working item data")
-
-    cursor.execute("SELECT * FROM characters WHERE char_id <= %s;", int(computerid*5000 + 5000))
+    
+    cursor.execute(GET_CHARACTERS_QUERY, int(computerid*5000 + 5000))
     list_of_acctchr=cursor.fetchall()
     acct, chr=acct_chr[1][0], acct_chr[1][1]
     print (f"Reqest number {acct_chr[0]}")
