@@ -17,7 +17,7 @@ MAX_LADDER=15000
 
 # SQL connection 
 rds_host='pypoe.cgqezikpygym.eu-west-2.rds.amazonaws.com'
-with open('creds.txt', 'r') as creds
+with open('creds.txt', 'r') as creds:
 	pwd=(creds.read()).strip()
 sql_connection=sql.connect(host=rds_host, user='admin', password=pwd, database='pytest')
 cursor=sql_connection.cursor(buffered=True)
