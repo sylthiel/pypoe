@@ -2,6 +2,8 @@
 #this script will combine the functionality of 2-5.py
 #first it will obtain the ladder and store it in grabbed.json
 #then it will handle the characters and store their items in SQL
+
+#limit can be set with the function call parameter request_limit for debug
 import json
 import requests
 import mysql.connector as sql
