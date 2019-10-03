@@ -64,9 +64,9 @@ def ladder_to_sql():
             cursor.execute(insert_query, acct_chr)
     sql_connection.commit()
     
-print(datetime.datetime.now()
+print(datetime.datetime.now())
 ladder_to_sql()
-print(datetime.datetime.now()
+print(datetime.datetime.now())
 #json.dump(obtain_ladder(current_league_url), db, indent=4, ensure_ascii=False)
 
 
