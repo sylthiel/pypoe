@@ -24,7 +24,7 @@ def handle_ladder_request_response(offset):
 		time.sleep(2)
 		response = requests.get(f"{current_league_url}?limit=200&offset={str(offset)}")
 		if (response.status_code == 429):
-			dbg.write(f"DENIED(429): {datetime.datetime.now()} for "{current_league_url}?limit=200&offset={str(offset)})
+			dbg.write(f"DENIED(429): {datetime.datetime.now()} for {current_league_url}?limit=200&offset={str(offset)}")
 			return ''
 
 
