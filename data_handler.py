@@ -26,19 +26,23 @@ def handle_ladder_request_response(offset):
 		if (response.status_code == 429):
 			dbg.write(f"DENIED(429): {datetime.datetime.now()} for {current_league_url}?limit=200&offset={str(offset)}")
 			return ''
+		elif(response.status_code == 200):
+			return response.json()
+		else:
+			dbg.write(f"ERROR {response.status_code}: {datetime.datetime.now()} for {current_league_url}?limit=200&offset={str(offset)}")
+			return ''
+
 
 
 def obtain_ladder(current_league_url):
 	list_grabbed = []
 	offset=0
 	while (offset+200<= MAX_LADDER):
-		response=handle_ladder_request_response(offset)
-		#response = requests.get(f"{current_league_url}?limit=200&offset={str(offset)}")
-		if(response):
-			list_grabbed.append(response)
+		chunk=handle_ladder_request_response(offset)
+		if(chunk):
+			list_grabbed.append(chunk)
 		offset+=200
 		db.write("\n")
-		print (response.status_code)
 	return list_grabbed
 
 json.dump(obtain_ladder(current_league_url), db, indent=4, ensure_ascii=False)
