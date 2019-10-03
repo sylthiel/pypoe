@@ -8,9 +8,52 @@ import mysql.connector as sql
 import time
 import datetime
 
+class poe_gem:
+	def __repr__(self):
+		return f"{self.name} ({self.colour})"
+	def __init__(self):
+		self.colour=''
+		self.name=''
+		self.support=False
+		self.tags=[]
+		self.socketedIn=''
+class poe_item:
+	def __init__(self, inventoryId='', socketgroups=[], gems=[]):
+		self.inventoryId=inventoryId
+		self.socketgroups=socketgroups
+		self.gems=gems
+		self.links=''
+		self.sortedlinks=''
+	def create_links(self):
+		linkage=''
+		for x in self.socketgroups:
+			if (x):
+				linkage=linkage+x
+			else:
+				linkage=linkage + '.'
+		self.links=linkage.rstrip('.')
+		self.sortedlinks=''.join(sorted(self.links))
+	def __repr__(self):
+		s = f"{self.inventoryId}\n links are {self.links}\n {(self.gems)}"
+		return s
+class poe_character:
+	def __init__ (self, rank, account_name, character_name, subclass):
+        self.rank=rank
+        self.account_name = account_name
+        self.character_name = character_name
+        self.subclass=subclass
+        self.gemdump=[]
+        self.socketgroupsdump=[]
+        self.items=[]
+
+
+
+
 
 ## QUERY DEFINITIONS
 GET_CHARACTERS_QUERY = """SELECT * FROM characters WHERE char_id <= %s;"""
+INSERT_ITEM_QUERY = "INSERT INTO items (item_id, inventory_id, sorted_links, char_id) VALUES (%s, %s, %s, %s);"
+INSERT_GEM_QUERY = "INSERT INTO gems (colour, name, support, tags, item_id, char_id) VALUES (%s, %s, %s, %s, %s, %s);"
 ##
 
 # CURRENT CONSTANTS: 3.8
@@ -32,6 +75,52 @@ dbg=open("dbg.log", "a+", encoding="utf-8")
 with open('computerid', 'r') as id:
     computerid=int(id.read())
 #
+##please forgive me for using globalvariables
+item_id=0
+##
+
+def yeet_character_items_to_sql(char):
+    print (f"{char_id} --  {char.account_name} -- {char.account_name}")
+    for item in char.items:
+		cursor.execute(INSERT_ITEM_QUERY, (item_id, item.inventoryId, item.sortedlinks, char_id))
+		for gem in item.gems:
+			cursor.execute(INSERT_GEM_QUERY, (gem.colour, gem.name, gem.support, gem.tags, item_id, char_id))
+		item_id+=1
+    sql_connection.commit()
+def parse_api_character_items(api_character_items, rank, account, character):
+    socketgroups=[]
+    gems=[]
+    tmp_character=poe_character(rank, account, character, api_character_items["character"]["subclass"])
+    for item in api_character_items['items']:
+		tmp_item=poe_item()
+        has_items=0
+		if ('sockets' in item):
+			has_items=1
+			tmp_socketgroup=['','','','','','']
+			for socket in item['sockets']:				
+				if(socket['sColour'] != 'A'):
+					tmp_socketgroup[socket['group']]+=socket['sColour']
+			tmp_item=poe_item(item["inventoryId"], tmp_socketgroup)
+		if ('socketedItems' in item):
+			for gem in item['socketedItems']:
+				if('abyssJewel' in gem):
+					continue
+				tmp=poe_gem()
+				tmp.socketedIn=item["inventoryId"]
+				tmp.colour=translation.get(gem['colour'])	
+				tmp.name=gem['typeLine']
+				tmp.support=gem['support']
+				tmp.tags=gem['properties'][0]["name"]
+				gems.append(tmp)
+		if(gems):
+			tmp_item.gems = gems
+			tmp_item.create_links()
+			tmp_character.items.append(tmp_item)
+		gems=[]
+	if(has_items):
+		yeet_character_items_to_sql(tmp_character)
+
+
 
 def handle_ladder_request_response(offset):
 	response = requests.get(f"{current_league_url}?limit=200&offset={str(offset)}")
@@ -57,7 +146,6 @@ def obtain_ladder(current_league_url):
 			list_grabbed.append(chunk)
 		offset+=200
 	return json.dumps(list_grabbed, indent=4, ensure_ascii=False)
-
 def ladder_to_sql():
     insert_query="INSERT INTO characters (account_name, character_name, char_id) VALUES (%s, %s, %s);"
     character_list=json.loads(obtain_ladder(current_league_url))
@@ -67,7 +155,7 @@ def ladder_to_sql():
             acct_chr=(str(character_list[i]["entries"][j]["account"]["name"]), str(character_list[i]["entries"][j]["character"]["name"]), str(character_list[i]["entries"][j]["rank"]))
             cursor.execute(insert_query, acct_chr)
     sql_connection.commit()
-def grab_items():
+def grab_items(request_limit=9001):
     dbg.write("----------------------------------------------------------")
     dbg.write(f"[{datetime.datetime.now()}] started working item data")
     list_items=[]
@@ -76,8 +164,7 @@ def grab_items():
     #print (list_of_acctchr[0][2])
     #print (list_of_acctchr[1])
     for acct_chr in (list_of_acctchr):
-        print (acct_chr)
-        acct, chr=acct_chr[1], acct_chr[2]
+        rank, acct, chr = acct_chr[0], acct_chr[1], acct_chr[2]
         print (f"Reqest number {acct_chr[0]}")
         print (f"https://www.pathofexile.com/character-window/get-items?accountName={acct}&character={chr}")
         attempts=0
@@ -93,23 +180,23 @@ def grab_items():
                 continue
             print(response.status_code)
             if(response.status_code==200):
-                list_items.append(response.json())
+                current_character_items=json.loads(response.json())
                 break
             elif(response.status_code!=429):
                 break
-            attempts+=1
-        
-        request+=1
+            attempts += 1 
+        request += 1
+        parse_api_character_items(current_character_items, rank, acct, chr)
         dbg.write(f"[{datetime.datetime.now()}] Request iteration {request} for https://www.pathofexile.com/character-window/get-items?accountName={acct}&character={chr} with response code {response.status_code}\n")
         time.sleep(2)
-        
-        #if(request >= 500):
-        #    break;
-    
+        if(request >= request_limit):
+            break;
+
     
 print(datetime.datetime.now())
-#ladder_to_sql()
-grab_items()
+ladder_to_sql()
+print(datetime.datetime.now())
+grab_items(45)
 print(datetime.datetime.now())
 #json.dump(obtain_ladder(current_league_url), db, indent=4, ensure_ascii=False)
 
