@@ -33,11 +33,15 @@ def obtain_ladder(current_league_url):
 	offset=0
 	while (offset+200<= MAX_LADDER):
 		response=handle_ladder_request_response(offset)
-		response = requests.get(f"{current_league_url}?limit=200&offset={str(offset)}")
+		#response = requests.get(f"{current_league_url}?limit=200&offset={str(offset)}")
+		if(response):
+			list_grabbed.append(response)
 		offset+=200
 		db.write("\n")
 		print (response.status_code)
-json.dump(list_grabbed, db, indent=4, ensure_ascii=False)
+	return list_grabbed
+
+json.dump(obtain_ladder, db, indent=4, ensure_ascii=False)
 
 
 
