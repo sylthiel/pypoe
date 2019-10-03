@@ -73,7 +73,7 @@ def grab_items():
     
     cursor.execute(GET_CHARACTERS_QUERY, (int(computerid*5000 + 5000),))
     list_of_acctchr=cursor.fetchall()
-    print (list_of_acctchr[0][1])
+    print (list_of_acctchr[0][2])
     #print (list_of_acctchr[1])
     for acct_chr in enumerate(list_of_acctchr):
         acct, chr=acct_chr[0][1], acct_chr[0][2]
