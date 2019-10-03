@@ -73,29 +73,35 @@ def grab_items():
     
     cursor.execute(GET_CHARACTERS_QUERY, (int(computerid*5000 + 5000),))
     list_of_acctchr=cursor.fetchall()
-    acct, chr=acct_chr[1][0], acct_chr[1][1]
-    print (f"Reqest number {acct_chr[0]}")
-    print (f"https://www.pathofexile.com/character-window/get-items?accountName={acct}&character={chr}")
-    attempts=0
-    while(True):
-        if(attempts > 3): 
-            break
-        try:
-            response = requests.get(f"https://www.pathofexile.com/character-window/get-items?accountName={acct}&character={chr}")
-        except ConnectionError as err:
-            dbg.write(f"FATALLY FAILING ON {request} with {str(err)}. Sleeping for 180")
-            time.sleep(180)
-            continue
-        print(response.status_code)
-        if(response.status_code==200):
-            list_items.append(response.json())
-            break
-        elif(response.status_code!=429):
-            break
-        attempts+=1
-    request+=1
-    dbg.write(f"[{datetime.datetime.now()}] Request iteration {request} for https://www.pathofexile.com/character-window/get-items?accountName={acct}&character={chr} with response code {response.status_code}\n")
-    time.sleep(2)
+    for acct_chr in enumerate(list_of_acctchr):
+        acct, chr=acct_chr[1][0], acct_chr[1][1]
+        print (f"Reqest number {acct_chr[0]}")
+        print (f"https://www.pathofexile.com/character-window/get-items?accountName={acct}&character={chr}")
+        attempts=0
+        while(True):
+            if(attempts > 3): 
+                break
+            try:
+                response = requests.get(f"https://www.pathofexile.com/character-window/get-items?accountName={acct}&character={chr}")
+            except ConnectionError as err:
+                dbg.write(f"FATALLY FAILING ON {request} with {str(err)}. Sleeping for 180")
+                time.sleep(180)
+                continue
+            print(response.status_code)
+            if(response.status_code==200):
+                list_items.append(response.json())
+                break
+            elif(response.status_code!=429):
+                break
+            attempts+=1
+        
+        request+=1
+        dbg.write(f"[{datetime.datetime.now()}] Request iteration {request} for https://www.pathofexile.com/character-window/get-items?accountName={acct}&character={chr} with response code {response.status_code}\n")
+        time.sleep(2)
+        
+        if(request >= 500):
+            break;
+    
     
 print(datetime.datetime.now())
 #ladder_to_sql()
