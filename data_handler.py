@@ -25,8 +25,10 @@ cursor=sql_connection.cursor(buffered=True)
 #very_nice_credntial_handling.jpeg
 
 # File opening
-db=open("grabbed.json", "w+", encoding='utf-8')
+#db=open("grabbed.json", "w+", encoding='utf-8')
 dbg=open("dbg.log", "a+", encoding="utf-8")
+with open('computerid', 'r') as id:
+    computerid=int(id.read())
 #
 
 def handle_ladder_request_response(offset):
@@ -64,7 +66,12 @@ def ladder_to_sql():
             acct_chr=(str(character_list[i]["entries"][j]["account"]["name"]), str(character_list[i]["entries"][j]["character"]["name"]), str(character_list[i]["entries"][j]["rank"]))
             cursor.execute(insert_query, acct_chr)
     sql_connection.commit()
-    
+def grab_items():
+    dbg.write("----------------------------------------------------------")
+    dbg.write(f"[{datetime.datetime.now()}] started working item data")
+
+    cursor.execute("SELECT * FROM characters WHERE rank <= %s;", computerid*5000 + 5000)
+    list_of_acctchr=cursor.fetchall()
 print(datetime.datetime.now())
 ladder_to_sql()
 print(datetime.datetime.now())
