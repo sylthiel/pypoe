@@ -70,12 +70,12 @@ def ladder_to_sql():
 def grab_items():
     dbg.write("----------------------------------------------------------")
     dbg.write(f"[{datetime.datetime.now()}] started working item data")
-    
+    list_items=[]
     cursor.execute(GET_CHARACTERS_QUERY, (int(computerid*5000 + 5000),))
     list_of_acctchr=cursor.fetchall()
     #print (list_of_acctchr[0][2])
     #print (list_of_acctchr[1])
-    for acct_chr in list_of_acctchr):
+    for acct_chr in (list_of_acctchr):
         print (acct_chr)
         acct, chr=acct_chr[1], acct_chr[2]
         print (f"Reqest number {acct_chr[0]}")
