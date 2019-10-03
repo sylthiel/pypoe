@@ -90,7 +90,7 @@ def yeet_character_items_to_sql(char):
 		item_id+=1
 	sql_connection.commit()
 def parse_api_character_items(api_character_items, rank, account, character):
-    print(api_character_items)
+	print(api_character_items)
 	socketgroups=[]
 	gems=[]
 	tmp_character=poe_character(rank, account, character, api_character_items["character"]["subclass"])
