@@ -76,7 +76,7 @@ def grab_items():
     print (list_of_acctchr[0])
     print (list_of_acctchr[1])
     for acct_chr in enumerate(list_of_acctchr):
-        acct, chr=acct_chr[1][0], acct_chr[1][1]
+        acct, chr=acct_chr[0][1], acct_chr[0][2]
         print (f"Reqest number {acct_chr[0]}")
         print (f"https://www.pathofexile.com/character-window/get-items?accountName={acct}&character={chr}")
         attempts=0
