@@ -101,6 +101,7 @@ def parse_api_character_items(api_character_items, rank, account, character):
 	items=[]
 	tmp_character=poe_character(rank, account, character, api_character_items["character"]["class"])
 	has_items=0
+	print(f"rank {rank} character {character} items parsing")
 	for item in api_character_items['items']:
 		tmp_item=poe_item()
 		if ('sockets' in item):
@@ -130,6 +131,7 @@ def parse_api_character_items(api_character_items, rank, account, character):
 		tmp_character.yeet_to_sql()
 	else:
 		dbg.write(f"Character {tmp_character.character_name} of rank {tmp_character.rank} has no items -- omitting from yeeting")
+		print(f"Character {tmp_character.character_name} of rank {tmp_character.rank} has no items -- omitting from yeeting")
 def handle_ladder_request_response(offset, current_league_url):
 	response = requests.get(f"{current_league_url}?limit=200&offset={str(offset)}")
 	if(response.status_code == 200):
