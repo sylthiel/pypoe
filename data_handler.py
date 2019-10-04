@@ -130,7 +130,7 @@ def parse_api_character_items(api_character_items, rank, account, character):
 		tmp_character.yeet_to_sql()
 	else:
 		dbg.write(f"Character {tmp_character.character_name} of rank {tmp_character.rank} has no items -- omitting from yeeting")
-def handle_ladder_request_response(offset):
+def handle_ladder_request_response(offset, current_league_url):
 	response = requests.get(f"{current_league_url}?limit=200&offset={str(offset)}")
 	if(response.status_code == 200):
 		return response.json()
@@ -149,7 +149,7 @@ def obtain_ladder(current_league_url):
 	list_grabbed = []
 	offset=0
 	while (offset+200<= MAX_LADDER):
-		chunk=handle_ladder_request_response(offset)
+		chunk=handle_ladder_request_response(offset, current_league_url)
 		if(chunk):
 			list_grabbed.append(chunk)
 		offset+=200
@@ -157,17 +157,16 @@ def obtain_ladder(current_league_url):
 def ladder_to_sql():
 	insert_query="INSERT INTO characters (account_name, character_name, char_id) VALUES (%s, %s, %s);"
 	character_list=json.loads(obtain_ladder(current_league_url))
-	
 	for i in range(len(character_list)):
 		for j in range (len(character_list[i]["entries"])):
 			acct_chr=(str(character_list[i]["entries"][j]["account"]["name"]), str(character_list[i]["entries"][j]["character"]["name"]), str(character_list[i]["entries"][j]["rank"]))
 			cursor.execute(insert_query, acct_chr)
 	sql_connection.commit()
-def grab_items(request_limit=9001):
+def grab_items(lboundary=int(computerid)*5000, rboundary=int(computerid*5000 + 5000), request_limit=9001):
 	dbg.write("----------------------------------------------------------")
 	dbg.write(f"[{datetime.datetime.now()}] started working item data")
 	list_items=[]
-	cursor.execute(GET_CHARACTERS_QUERY, (int(computerid)*5000, int(computerid*5000 + 5000),))
+	cursor.execute(GET_CHARACTERS_QUERY, (lboundary, rboundary,))
 	list_of_acctchr=cursor.fetchall()
 	request=0
 	for acct_chr in (list_of_acctchr):
@@ -196,7 +195,7 @@ def grab_items(request_limit=9001):
 		request += 1
 		parse_api_character_items(current_character_items, rank, acct, chr)
 		dbg.write(f"[{datetime.datetime.now()}] Request iteration {request} for https://www.pathofexile.com/character-window/get-items?accountName={acct}&character={chr} with response code {response.status_code}\n")
-		time.sleep(2)
+		time.sleep(1)
 		if(request >= request_limit):
 			break;
 #print(datetime.datetime.now())
