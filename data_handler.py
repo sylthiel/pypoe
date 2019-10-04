@@ -50,7 +50,7 @@ class poe_character:
 	def yeet_to_sql(self):
 		dbg.write(f"Yeeting {self.rank} --	 {self.account_name} -- {self.account_name}")
 		global item_id
-		for item in char.items:
+		for item in self.items:
 			cursor.execute(INSERT_ITEM_QUERY, (item_id, item.inventoryId, item.sortedlinks, self.rank))
 			for gem in item.gems:
 				cursor.execute(INSERT_GEM_QUERY, (gem.colour, gem.name, gem.support, gem.tags, item_id, self.rank))
