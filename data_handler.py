@@ -47,6 +47,15 @@ class poe_character:
 		self.gemdump=[]
 		self.socketgroupsdump=[]
 		self.items=[]
+	def yeet_to_sql(self):
+		dbg.write(f"Yeeting {self.rank} --	 {self.account_name} -- {self.account_name}")
+		global item_id
+		for item in char.items:
+			cursor.execute(INSERT_ITEM_QUERY, (item_id, item.inventoryId, item.sortedlinks, self.rank))
+			for gem in item.gems:
+				cursor.execute(INSERT_GEM_QUERY, (gem.colour, gem.name, gem.support, gem.tags, item_id, self.rank))
+			item_id+=1
+		sql_connection.commit()
 
 
 
@@ -85,15 +94,7 @@ item_id=0
 ##
 
 
-def yeet_character_items_to_sql(char):
-	print (f"Yeeting {char.rank} --	 {char.account_name} -- {char.account_name}")
-	global item_id
-	for item in char.items:
-		cursor.execute(INSERT_ITEM_QUERY, (item_id, item.inventoryId, item.sortedlinks, char.rank))
-		for gem in item.gems:
-			cursor.execute(INSERT_GEM_QUERY, (gem.colour, gem.name, gem.support, gem.tags, item_id, char.rank))
-		item_id+=1
-	sql_connection.commit()
+
 def parse_api_character_items(api_character_items, rank, account, character):
 	socketgroups=[]
 	gems=[]
@@ -126,7 +127,9 @@ def parse_api_character_items(api_character_items, rank, account, character):
 			tmp_character.items.append(tmp_item)
 		gems=[]
 	if(has_items):
-		yeet_character_items_to_sql(tmp_character)
+		tmp_character.yeet_to_sql()
+	else:
+		dbg.write(f"Character {tmp_character.character_name} of rank {tmp_character.rank} has no items -- omitting from yeeting")
 def handle_ladder_request_response(offset):
 	response = requests.get(f"{current_league_url}?limit=200&offset={str(offset)}")
 	if(response.status_code == 200):
@@ -166,15 +169,12 @@ def grab_items(request_limit=9001):
 	list_items=[]
 	cursor.execute(GET_CHARACTERS_QUERY, (int(computerid)*5000, int(computerid*5000 + 5000),))
 	list_of_acctchr=cursor.fetchall()
-	#print (list_of_acctchr[0][2])
-	#print (list_of_acctchr[1])
 	request=0
 	for acct_chr in (list_of_acctchr):
 		rank, acct, chr = acct_chr[0], acct_chr[1], acct_chr[2]
 		print (f"Reqest number {acct_chr[0]}")
 		print (f"https://www.pathofexile.com/character-window/get-items?accountName={acct}&character={chr}")
 		attempts=0
-		
 		while(True):
 			if(attempts > 3): 
 				break
@@ -184,6 +184,8 @@ def grab_items(request_limit=9001):
 				dbg.write(f"FATALLY FAILING ON {request} with {str(err)}. Sleeping for 180")
 				time.sleep(180)
 				continue
+			except:
+				dbg.write(f"{sys.exc_info} FUCKED ME UP")
 			print(response.status_code)
 			if(response.status_code==200):
 				current_character_items=response.json()
@@ -198,8 +200,8 @@ def grab_items(request_limit=9001):
 		if(request >= request_limit):
 			break;
 print(datetime.datetime.now())
-#ladder_to_sql()
-#print(datetime.datetime.now())
+ladder_to_sql()
+print(datetime.datetime.now())
 grab_items()
 print(datetime.datetime.now())
 #json.dump(obtain_ladder(current_league_url), db, indent=4, ensure_ascii=False)
