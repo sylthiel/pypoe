@@ -176,6 +176,7 @@ def grab_items(lboundary=int(computerid)*5000, rboundary=int(computerid*5000 + 5
 		print (f"Reqest number {acct_chr[0]}")
 		print (f"https://www.pathofexile.com/character-window/get-items?accountName={acct}&character={chr}")
 		attempts=0
+		success=0
 		while(True):
 			if(attempts > 3): 
 				break
@@ -190,12 +191,14 @@ def grab_items(lboundary=int(computerid)*5000, rboundary=int(computerid*5000 + 5
 			print(response.status_code)
 			if(response.status_code==200):
 				current_character_items=response.json()
+				success=1
 				break
 			elif(response.status_code!=429):
 				break
 			attempts += 1 
 		request += 1
-		parse_api_character_items(current_character_items, rank, acct, chr)
+		if(success):
+			parse_api_character_items(current_character_items, rank, acct, chr)
 		dbg.write(f"[{datetime.datetime.now()}] Request iteration {request} for https://www.pathofexile.com/character-window/get-items?accountName={acct}&character={chr} with response code {response.status_code}\n")
 		time.sleep(1)
 		if(request >= request_limit):
