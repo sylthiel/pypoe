@@ -49,12 +49,10 @@ class poe_character:
 		self.items=[]
 	def yeet_to_sql(self):
 		dbg.write(f"Yeeting {self.rank} --	 {self.account_name} -- {self.account_name}")
-		global item_id
 		for item in self.items:
-			cursor.execute(INSERT_ITEM_QUERY, (item_id, item.inventoryId, item.sortedlinks, self.rank))
+			cursor.execute(INSERT_ITEM_QUERY, (item.inventoryId, item.sortedlinks, self.rank))
 			for gem in item.gems:
-				cursor.execute(INSERT_GEM_QUERY, (gem.colour, gem.name, gem.support, gem.tags, item_id, self.rank))
-			item_id+=1
+				cursor.execute(INSERT_GEM_QUERY, (gem.colour, gem.name, gem.support, gem.tags, self.rank, gem.inventoryId))
 		sql_connection.commit()
 
 
@@ -63,8 +61,8 @@ class poe_character:
 
 ## QUERY DEFINITIONS
 GET_CHARACTERS_QUERY = """SELECT * FROM characters WHERE (%s <= char_id) AND (char_id <= %s);"""
-INSERT_ITEM_QUERY = "INSERT INTO items (item_id, inventory_id, sorted_links, char_id) VALUES (%s, %s, %s, %s);"
-INSERT_GEM_QUERY = "INSERT INTO gems (colour, name, support, tags, item_id, char_id) VALUES (%s, %s, %s, %s, %s, %s);"
+INSERT_ITEM_QUERY = "INSERT INTO items (inventory_id, sorted_links, char_id) VALUES (%s, %s, %s);"
+INSERT_GEM_QUERY = "INSERT INTO gems (colour, name, support, tags, char_id, socketed_in) VALUES (%s, %s, %s, %s, %s, %s);"
 ##
 
 # CURRENT CONSTANTS: 3.8
@@ -89,9 +87,7 @@ dbg=open("dbg.log", "a+", encoding="utf-8")
 with open('computerid', 'r') as id:
 	computerid=int(id.read())
 #
-##please forgive me for using globalvariables
-item_id=0
-##
+
 
 
 
