@@ -52,7 +52,7 @@ class poe_character:
 		for item in self.items:
 			cursor.execute(INSERT_ITEM_QUERY, (item.inventoryId, item.sortedlinks, self.rank))
 			for gem in item.gems:
-				cursor.execute(INSERT_GEM_QUERY, (gem.colour, gem.name, gem.support, gem.tags, self.rank, gem.inventoryId))
+				cursor.execute(INSERT_GEM_QUERY, (gem.colour, gem.name, gem.support, gem.tags, self.rank, gem.socketedIn))
 		sql_connection.commit()
 
 
