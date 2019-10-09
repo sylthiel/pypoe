@@ -17,7 +17,7 @@ cursor.execute("SET NAMES 'utf8mb4';")
 #very_nice_credntial_handling.jpeg
 
 #
-COLOR_QUERY = """SELECT char_id, inventory_id FROM items WHERE sorted_links LIKE %s"""
+COLOR_QUERY = """SELECT char_id, inventory_id FROM items WHERE sorted_links LIKE %s;;"""
 #
 
 
