@@ -26,7 +26,7 @@ def process_webform_request(colors = '', tags = ''):
 	if(colors != ''):
 		cursor.execute(COLOR_QUERY, (colors.replace('W', '%'),))
 	tmp_list=cursor.fetchall()
-	print(tmp_list)
+	print(*tmp_list, sep="\n")
 
 		
 
