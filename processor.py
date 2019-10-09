@@ -24,7 +24,7 @@ COLOR_QUERY = '''SELECT char_id, inventory_id FROM items WHERE sorted_links LIKE
 def process_webform_request(colors = '', tags = ''):
 	white_gems_present = ('W' in colors)
 	if(colors != ''):
-		cursor.execute(COLOR_QUERY, (colors.replace('W', '%'))
+		cursor.execute(COLOR_QUERY, (colors.replace('W', '%')))
 	tmp_list=cursor.fetchall()
 	print(tmp_list)
 
