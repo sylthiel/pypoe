@@ -19,15 +19,15 @@ cursor.execute("SET NAMES 'utf8mb4';")
 #
 COLOR_QUERY = """SELECT char_id, inventory_id FROM items WHERE sorted_links LIKE %s;;"""
 TAGS_QUERY  = """SELECT * FROM gems WHERE (char_id=%s) AND (socketed_in=%s);"""
+COLOR_AND_TAGS_QUERY="""SELECT DISTINCT items.char_id, items.inventory_id from items join gems on (items.char_id=gems.char_id AND items.sorted_links LIKE %s and items.inventory_id=gems.socketed_in and gems.support=0 and gems.tags LIKE %s)"""
 #
 
 
 def process_webform_request(colors = '', tags = ''):
 	white_gems_present = ('W' in colors)
 	tmp_list=[]
-	if(colors != ''):
-		cursor.execute(COLOR_QUERY, (colors.replace('W', '_'),))
-		tmp_list=cursor.fetchall()
+	if(color!='' and tags!=''):
+
 	print(*tmp_list, sep="\n")
 	if(tags != ''):
 
