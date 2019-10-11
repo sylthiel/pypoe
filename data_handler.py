@@ -52,7 +52,7 @@ class poe_character:
 		for item in self.items:
 			cursor.execute(INSERT_ITEM_QUERY, (item.inventoryId, item.sortedlinks, self.rank))
 			for gem in item.gems:
-				cursor.execute(INSERT_GEM_QUERY, (gem.colour, gem.name, gem.support, gem.tags, self.rank, gem.socketedIn))
+				cursor.execute(INSERT_GEM_QUERY, (gem.colour, gem.name, gem.support, " ".join(gem.tags), self.rank, gem.socketedIn))
 		sql_connection.commit()
 
 
@@ -94,9 +94,9 @@ def tagify (tags):
 	print(tmp)
 	tmp = tags.replace(",", "")
 	print(tmp)
-	tmp = (tmp.split()).sort()
+	tmp = (tmp.split())
 	print(tmp)
-	return tmp
+	return tmp.sort()
 
 def parse_api_character_items(api_character_items, rank, account, character):
 	socketgroups=[]
