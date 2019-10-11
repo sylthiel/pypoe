@@ -96,8 +96,7 @@ def tagify (tags):
 	print(tmp)
 	tmp = (tmp.split())
 	print(tmp)
-	tmp=tmp.sort()
-	return tmp
+	return sorted(tmp)
 
 def parse_api_character_items(api_character_items, rank, account, character):
 	socketgroups=[]
