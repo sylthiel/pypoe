@@ -90,13 +90,7 @@ with open('computerid', 'r') as id:
 
 
 def tagify (tags):
-	tmp = tags
-	print(tmp)
-	tmp = tags.replace(",", "")
-	print(tmp)
-	tmp = (tmp.split())
-	print(tmp)
-	return sorted(tmp)
+	return sorted((tags.replace(',','').split())
 
 def parse_api_character_items(api_character_items, rank, account, character):
 	socketgroups=[]
