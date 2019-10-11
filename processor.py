@@ -23,13 +23,12 @@ COLOR_AND_TAGS_QUERY="""SELECT DISTINCT items.char_id, items.inventory_id from i
 #
 
 
-def process_webform_request(colors = '', tags = ''):
-	white_gems_present = ('W' in colors)
+def process_webform_request(colors = '%', tags = '%'):
+	colors=colors.replace('W', '_')
 	tmp_list=[]
-	if(color!='' and tags!=''):
-
-	print(*tmp_list, sep="\n")
-	if(tags != ''):
+	cursor.execute(COLOR_AND_TAGS_QUERY, (colors, tags,))
+	tmp_list=cursor.fetchall()
+	print (tmp_list)
 
 		
 
