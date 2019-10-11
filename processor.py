@@ -25,6 +25,7 @@ COLOR_AND_TAGS_QUERY="""SELECT DISTINCT items.char_id, items.inventory_id from i
 
 def process_webform_request(colors = '%', tags = '%'):
 	colors=colors.replace('W', '_')
+	tags="%"+tags+"%"
 	tmp_list=[]
 	cursor.execute(COLOR_AND_TAGS_QUERY, (colors, tags,))
 	print(cursor.statement)
