@@ -68,8 +68,8 @@ INSERT_GEM_QUERY = "INSERT INTO gems (colour, name, support, tags, char_id, sock
 # CURRENT CONSTANTS: 3.8
 current_league_url = "https://www.pathofexile.com/api/ladders/Blight"
 MAX_LADDER=15000
-# GEM COLOR TRANLSATION -- GGG CODES SOCKETS AS RGB BUT GEMS AS SDI ¯\_(ツ)_/¯¯
-translation={"S" : "R", "D" : "G", "I" : "B", "W" : "W", "A": "A"}
+# GEM COLOR TRANLSATION -- GGG CODES SOCKETS AS RGB BUT GEMS AS SDI ¯\_(ツ)_/¯¯ AND PORTAL is a G GEM
+translation={"S" : "R", "D" : "G", "I" : "B", "W" : "W", "A": "A", "G" : "W"}
 #
 
 # SQL connection 
@@ -118,7 +118,7 @@ def parse_api_character_items(api_character_items, rank, account, character):
 				tmp.name=gem['typeLine']
 				tmp.support=gem['support']
 				tmp.tags=tagify(gem['properties'][0]["name"])
-				print(f"tmp.tags={tmp.tags}")
+				#print(f"tmp.tags={tmp.tags}")
 				#print(type(gem['properties'][0]["name"]))
 				#print(sorted((gem['properties'][0]["name"])))
 				gems.append(tmp)
