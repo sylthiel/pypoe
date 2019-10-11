@@ -117,6 +117,8 @@ def parse_api_character_items(api_character_items, rank, account, character):
 				tmp.name=gem['typeLine']
 				tmp.support=gem['support']
 				tmp.tags=gem['properties'][0]["name"]
+				print(type(gem['properties'][0]["name"]))
+				print(sorted((gem['properties'][0]["name"])))
 				gems.append(tmp)
 		if(gems):
 			tmp_item.gems = gems
