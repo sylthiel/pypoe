@@ -22,10 +22,14 @@ TAGS_QUERY  = """SELECT * FROM gems WHERE (char_id=%s) AND (socketed_in=%s);"""
 COLOR_AND_TAGS_QUERY="""SELECT DISTINCT items.char_id, items.inventory_id from items join gems on (items.char_id=gems.char_id AND items.sorted_links LIKE %s and items.inventory_id=gems.socketed_in and gems.support=0 and gems.tags LIKE %s)"""
 #
 
+#return sorted((tags.replace(',','').split()))
 
 def process_webform_request(colors = '%', tags = '%'):
 	colors=colors.replace('W', '_')
-	tags="%"+tags+"%"
+	if(tags!='%'):
+		tags="%".join(sorted((tags.replace(",", " ").split())))
+		print(tags)
+	
 	tmp_list=[]
 	cursor.execute(COLOR_AND_TAGS_QUERY, (colors, tags,))
 	print(cursor.statement)
