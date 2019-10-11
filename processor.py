@@ -27,7 +27,7 @@ COLOR_AND_TAGS_QUERY="""SELECT DISTINCT items.char_id, items.inventory_id from i
 def process_webform_request(colors = '%', tags = '%'):
 	colors=colors.replace('W', '_')
 	if(tags!='%'):
-		tags="%".join(sorted((tags.replace(",", " ").split())))
+		tags="%"+("%".join(sorted((tags.replace(",", " ").split()))))+"%"
 		print(tags)
 	
 	tmp_list=[]
