@@ -96,7 +96,8 @@ def tagify (tags):
 	print(tmp)
 	tmp = (tmp.split())
 	print(tmp)
-	return tmp.sort()
+	tmp=tmp.sort()
+	return tmp
 
 def parse_api_character_items(api_character_items, rank, account, character):
 	socketgroups=[]
@@ -124,7 +125,7 @@ def parse_api_character_items(api_character_items, rank, account, character):
 				tmp.name=gem['typeLine']
 				tmp.support=gem['support']
 				tmp.tags=tagify(gem['properties'][0]["name"])
-				print(tmp.tags)
+				print(f"tmp.tags={tmp.tags}")
 				#print(type(gem['properties'][0]["name"]))
 				#print(sorted((gem['properties'][0]["name"])))
 				gems.append(tmp)
