@@ -89,7 +89,10 @@ with open('computerid', 'r') as id:
 #
 
 
-
+def tagify (tags):
+	tmp = tags.replace(",", "")
+	tmp = (tmp.split()).sort()
+	return tmp
 
 def parse_api_character_items(api_character_items, rank, account, character):
 	socketgroups=[]
@@ -116,9 +119,10 @@ def parse_api_character_items(api_character_items, rank, account, character):
 				tmp.colour=translation.get(gem['colour'])	
 				tmp.name=gem['typeLine']
 				tmp.support=gem['support']
-				tmp.tags=gem['properties'][0]["name"]
-				print(type(gem['properties'][0]["name"]))
-				print(sorted((gem['properties'][0]["name"])))
+				tmp.tags=tagify(gem['properties'][0]["name"])
+				print(tmp.tags)
+				#print(type(gem['properties'][0]["name"]))
+				#print(sorted((gem['properties'][0]["name"])))
 				gems.append(tmp)
 		if(gems):
 			tmp_item.gems = gems
