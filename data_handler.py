@@ -90,8 +90,12 @@ with open('computerid', 'r') as id:
 
 
 def tagify (tags):
+	tmp = tags
+	print(tmp)
 	tmp = tags.replace(",", "")
+	print(tmp)
 	tmp = (tmp.split()).sort()
+	print(tmp)
 	return tmp
 
 def parse_api_character_items(api_character_items, rank, account, character):
