@@ -1,0 +1,71 @@
+<html>
+
+<body><div align="center"><br><br><br><br>
+<form action="https://qa8krh5pw3.execute-api.eu-west-2.amazonaws.com/Production/pypoe" method="GET"><br><br><br><br>
+	<div align="left">
+	Number of Red sockets:<br>
+	<input type="text" name="rcolours" id="rcolours" value=0><br>
+	Number of Green sockets:<br>
+	<input type="text" name="gcolours" id="gcolours" value=0><br>
+	Number of Blue sockets:<br>
+	<input type="text" name="bcolours" id="bcolours" value=0><br>
+	Number of White sockets:<br>
+	<input type="text" name="wcolours" id="wcolours" value=0><br>
+	Search for Active gems with these tags:<br>
+	<input type="text" name="tags" id="tags"><br>
+	
+	<button> Search </button>
+	</div>
+</form>	
+<script>
+	let form = document.querySelector("form");
+	form.addEventListener("submit", event => {
+		event.preventDefault();
+		var r=document.getElementById("rcolours").value;
+		var g=document.getElementById("gcolours").value;
+		var b=document.getElementById("bcolours").value;
+		var w=document.getElementById("wcolours").value;
+		var t=document.getElementById("tags").value;
+		var xhttp = new XMLHttpRequest();
+		let url = new URL ("https://qa8krh5pw3.execute-api.eu-west-2.amazonaws.com/Production/pypoe")
+		url.searchParams.set('rcolours', r);
+		url.searchParams.append('gcolours', g);
+		url.searchParams.append('bcolours', b);
+		url.searchParams.append('wcolours', w);
+		url.searchParams.append('tags', t);
+		console.log(String(url));
+        xhttp.onreadystatechange = function () {
+			txt=""
+			if (this.readyState == 4 && this.status == 200) {
+				jsondata = JSON.parse(this.responseText);
+				txt+= "<table border='1'>"
+				txt+= "<tr><th>Account Name</th><th>Character Name</th><th>Rank</th><th>Inventory Slot</th><th>poe.ninja URL</th>"
+				for (i in jsondata) {
+					<!--txt += "<tr><td>" + jsondata[x] + "</td></tr>";-->
+					txt+="<tr>"
+					for (j in jsondata[i]) {
+						txt += "<td>" + jsondata[i][j] + "</td>"
+					}
+					txt+="</tr>"
+				}
+				txt += "</table>"
+				document.getElementById("data").innerHTML = txt;
+			}
+			else if (this.readyState == 4 && this.status == 400) {
+				console.log(this.responseText);
+				document.getElementById("error").innerHTML=this.response;
+			}
+		}
+		xhttp.open("GET", url, true);
+		xhttp.send();
+	});
+</script>
+<span id="data"> Fill out the search fields </span> <br><br>
+<p style="color:red" id="error"></p>
+</div>
+
+
+
+
+</body>
+</html>
